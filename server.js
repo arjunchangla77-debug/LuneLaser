@@ -37,12 +37,17 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: function (origin, callback) {
+    console.log('CORS check - Origin:', origin);
+    console.log('CORS check - Allowed origins:', allowedOrigins);
+    
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
     
     if (allowedOrigins.indexOf(origin) !== -1) {
+      console.log('CORS - Origin allowed:', origin);
       callback(null, true);
     } else {
+      console.log('CORS - Origin rejected:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
@@ -110,6 +115,10 @@ app.get('/test-db', async (req, res) => {
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/dental-offices', dentalOfficesRoutes);
+
+// Compatibility routes for frontend (without /api prefix)
+app.use('/auth', authRoutes);
+app.use('/dental-offices', dentalOfficesRoutes);
 
 // Backend only - no static file serving
 
