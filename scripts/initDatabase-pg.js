@@ -4,6 +4,11 @@ const bcrypt = require('bcryptjs');
 async function initializeDatabase() {
   try {
     console.log('🔄 Initializing PostgreSQL database...');
+    
+    // Test connection first
+    const client = await pool.connect();
+    console.log('✅ Database connection established');
+    client.release();
 
     // Create users table
     await pool.query(`
