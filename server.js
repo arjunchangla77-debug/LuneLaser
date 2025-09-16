@@ -69,6 +69,28 @@ app.get('/debug', (req, res) => {
   });
 });
 
+// Database connection test endpoint
+app.get('/test-db', async (req, res) => {
+  try {
+    const { pool } = require('./config/database-pg');
+    const client = await pool.connect();
+    await client.query('SELECT NOW()');
+    client.release();
+    res.json({
+      success: true,
+      message: 'Database connection successful',
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Database connection failed',
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/dental-offices', dentalOfficesRoutes);
