@@ -12,14 +12,14 @@ const { initializeDatabase } = require('./scripts/initDatabase-pg');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Initialize database on startup
+// Initialize database on startup (don't exit on failure)
 initializeDatabase()
   .then(() => {
-    console.log(' Database initialized successfully');
+    console.log('✅ Database initialized successfully');
   })
   .catch((error) => {
-    console.error(' Database initialization failed:', error);
-    process.exit(1);
+    console.error('❌ Database initialization failed:', error.message);
+    console.log('⚠️  Server will continue running for debugging...');
   });
 
 // Security middleware
@@ -53,6 +53,19 @@ app.get('/health', (req, res) => {
     message: 'EnamelPure Invoice API is running',
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || 'development'
+  });
+});
+
+// Debug endpoint to check environment variables
+app.get('/debug', (req, res) => {
+  res.json({
+    success: true,
+    environment: process.env.NODE_ENV,
+    hasDatabase: !!process.env.DATABASE_URL,
+    databaseUrl: process.env.DATABASE_URL ? 'Set (hidden for security)' : 'Not set',
+    frontendUrl: process.env.FRONTEND_URL,
+    hasJwtSecret: !!process.env.JWT_SECRET,
+    hasEmailConfig: !!(process.env.EMAIL_USER && process.env.EMAIL_PASS)
   });
 });
 
