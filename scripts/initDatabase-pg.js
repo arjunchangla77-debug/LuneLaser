@@ -20,9 +20,16 @@ async function initializeDatabase() {
         role VARCHAR(50) DEFAULT 'user',
         reset_token VARCHAR(255),
         reset_token_expires BIGINT,
+        last_login TIMESTAMP,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
+    `);
+
+    // Add last_login column if it doesn't exist (for existing databases)
+    await pool.query(`
+      ALTER TABLE users 
+      ADD COLUMN IF NOT EXISTS last_login TIMESTAMP
     `);
 
     // Create dental_offices table

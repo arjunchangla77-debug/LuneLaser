@@ -12,6 +12,9 @@ const { initializeDatabase } = require('./scripts/initDatabase-pg');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Configure trust proxy for Render deployment
+app.set('trust proxy', 1);
+
 // Initialize database on startup (don't exit on failure)
 initializeDatabase()
   .then(() => {
