@@ -17,12 +17,21 @@ async function initializeDatabase() {
         username VARCHAR(255) UNIQUE NOT NULL,
         email VARCHAR(255) UNIQUE NOT NULL,
         password VARCHAR(255) NOT NULL,
+        full_name VARCHAR(255),
         role VARCHAR(50) DEFAULT 'user',
         reset_token VARCHAR(255),
         reset_token_expires BIGINT,
+        last_login TIMESTAMP,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
+    `);
+
+    // Add missing columns if they don't exist (for existing databases)
+    await pool.query(`
+      ALTER TABLE users 
+      ADD COLUMN IF NOT EXISTS last_login TIMESTAMP,
+      ADD COLUMN IF NOT EXISTS full_name VARCHAR(255)
     `);
 
     // Create dental_offices table
