@@ -7,6 +7,9 @@ require('dotenv').config();
 
 const authRoutes = require('./routes/auth');
 const dentalOfficesRoutes = require('./routes/dentalOffices-pg');
+const invoicesRoutes = require('./routes/invoices-pg');
+const machinesRoutes = require('./routes/machines-pg');
+const buttonUsageRoutes = require('./routes/buttonUsage-pg');
 const { initializeDatabase } = require('./scripts/initDatabase-pg');
 
 const app = express();
@@ -118,10 +121,16 @@ app.get('/test-db', async (req, res) => {
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/dental-offices', dentalOfficesRoutes);
+app.use('/api/invoices', invoicesRoutes);
+app.use('/api/machines', machinesRoutes);
+app.use('/api/button-usage', buttonUsageRoutes);
 
 // Compatibility routes for frontend (without /api prefix)
 app.use('/auth', authRoutes);
 app.use('/dental-offices', dentalOfficesRoutes);
+app.use('/invoices', invoicesRoutes);
+app.use('/machines', machinesRoutes);
+app.use('/button-usage', buttonUsageRoutes);
 
 // Backend only - no static file serving
 
