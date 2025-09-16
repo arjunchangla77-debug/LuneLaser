@@ -10,7 +10,7 @@ const dentalOfficesRoutes = require('./routes/dentalOffices');
 const luneMachinesRoutes = require('./routes/luneMachines');
 const invoicesRoutes = require('./routes/invoices');
 const buttonUsageRoutes = require('./routes/buttonUsage');
-const { initializeDatabase } = require('./scripts/initDatabase');
+const { initializeDatabase } = require('./scripts/initDatabase-pg');
 
 const app = express();
 const PORT = process.env.PORT || 5000;

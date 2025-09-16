@@ -1,5 +1,5 @@
 const { body, validationResult } = require('express-validator');
-const User = require('../models/User');
+const User = require('../models/User-pg');
 const { generateToken } = require('../middleware/auth');
 const emailService = require('../services/emailService');
 
@@ -98,7 +98,7 @@ class AuthController {
       }
 
       // Verify password
-      const isValidPassword = await User.verifyPassword(password, user.password_hash);
+      const isValidPassword = await User.verifyPassword(password, user.password);
       if (!isValidPassword) {
         return res.status(401).json({
           success: false,
