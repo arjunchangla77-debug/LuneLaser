@@ -6,10 +6,7 @@ const path = require('path');
 require('dotenv').config();
 
 const authRoutes = require('./routes/auth');
-const dentalOfficesRoutes = require('./routes/dentalOffices');
-const luneMachinesRoutes = require('./routes/luneMachines');
-const invoicesRoutes = require('./routes/invoices');
-const buttonUsageRoutes = require('./routes/buttonUsage');
+const dentalOfficesRoutes = require('./routes/dentalOffices-pg');
 const { initializeDatabase } = require('./scripts/initDatabase-pg');
 
 const app = express();
@@ -62,9 +59,6 @@ app.get('/health', (req, res) => {
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/dental-offices', dentalOfficesRoutes);
-app.use('/api/lune-machines', luneMachinesRoutes);
-app.use('/api/invoices', invoicesRoutes);
-app.use('/api/button-usage', buttonUsageRoutes);
 
 // Serve static files in production
 if (process.env.NODE_ENV === 'production') {

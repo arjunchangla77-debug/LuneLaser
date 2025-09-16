@@ -1,16 +1,9 @@
 const express = require('express');
-const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
 const { body, validationResult } = require('express-validator');
 const { authenticateToken } = require('../middleware/auth');
+const pool = require('../config/database-pg');
 
 const router = express.Router();
-const dbPath = path.join(__dirname, '..', 'database', 'users.db');
-
-// Get database connection
-const getDb = () => {
-  return new sqlite3.Database(dbPath);
-};
 
 // Get all dental offices (excluding deleted ones)
 router.get('/', authenticateToken, (req, res) => {
