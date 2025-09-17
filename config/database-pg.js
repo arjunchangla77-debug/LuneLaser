@@ -9,7 +9,9 @@ const pool = new Pool({
   } : false,
   max: 20,
   idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
+  connectionTimeoutMillis: 10000, // Increased timeout for Render
+  acquireTimeoutMillis: 60000,
+  createTimeoutMillis: 30000,
 });
 
 // Test database connection

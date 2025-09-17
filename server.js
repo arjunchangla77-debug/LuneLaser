@@ -66,6 +66,12 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+// Ensure all responses are JSON (prevent HTML error pages)
+app.use((req, res, next) => {
+  res.setHeader('Content-Type', 'application/json');
+  next();
+});
+
 // Logging middleware
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -99,20 +105,34 @@ app.get('/debug', (req, res) => {
 // Database connection test endpoint
 app.get('/test-db', async (req, res) => {
   try {
-    const { pool } = require('./config/database-pg');
-    const client = await pool.connect();
-    await client.query('SELECT NOW()');
+    const pool = require('./config/database-pg');
+    console.log('Testing database connection...');
+    
+    // Test with timeout
+    const client = await Promise.race([
+      pool.connect(),
+      new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Connection timeout')), 15000)
+      )
+    ]);
+    
+    console.log('Database client acquired, testing query...');
+    const result = await client.query('SELECT NOW() as current_time, version() as pg_version');
     client.release();
+    
     res.json({
       success: true,
       message: 'Database connection successful',
+      data: result.rows[0],
       timestamp: new Date().toISOString()
     });
   } catch (error) {
+    console.error('Database test error:', error);
     res.status(500).json({
       success: false,
       message: 'Database connection failed',
       error: error.message,
+      code: error.code,
       timestamp: new Date().toISOString()
     });
   }
