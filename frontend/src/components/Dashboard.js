@@ -20,7 +20,7 @@ const Dashboard = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('authToken');
-      const response = await fetch('https://enamel-backend.onrender.com/api/dental-offices', {
+      const response = await fetch('/api/dental-offices', {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'

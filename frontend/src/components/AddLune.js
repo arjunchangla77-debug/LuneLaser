@@ -99,7 +99,7 @@ const AddLune = () => {
     
     try {
       const token = localStorage.getItem('authToken');
-      const response = await fetch('https://enamel-backend.onrender.com/api/machines', {
+      const response = await fetch('/api/lune-machines', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

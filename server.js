@@ -107,6 +107,16 @@ app.post('/api/test-post', (req, res) => {
   });
 });
 
+// Frontend config endpoint
+app.get('/api/config', (req, res) => {
+  res.json({
+    success: true,
+    apiUrl: 'https://enamel-backend.onrender.com',
+    frontendUrl: 'https://lunelaser.vercel.app',
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Debug endpoint to check environment variables
 app.get('/debug', (req, res) => {
   res.json({

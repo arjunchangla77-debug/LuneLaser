@@ -126,7 +126,7 @@ const CreateOffice = () => {
     
     try {
       const token = localStorage.getItem('authToken');
-      const response = await fetch('https://enamel-backend.onrender.com/api/dental-offices', {
+      const response = await fetch('/api/dental-offices', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
