@@ -86,10 +86,11 @@ class AuthController {
         });
       }
 
-      const { login, password } = req.body;
+      const { login, username, password } = req.body;
+      const loginField = login || username;
 
       // Find user by username or email
-      const user = await User.findByLogin(login);
+      const user = await User.findByLogin(loginField);
       if (!user) {
         return res.status(401).json({
           success: false,
@@ -324,11 +325,19 @@ const registerValidation = [
 
 const loginValidation = [
   body('login')
-    .notEmpty()
-    .withMessage('Username or email is required'),
+    .optional(),
+  body('username')
+    .optional(),
   body('password')
     .notEmpty()
-    .withMessage('Password is required')
+    .withMessage('Password is required'),
+  // Custom validation to ensure either login or username is provided
+  body().custom((value, { req }) => {
+    if (!req.body.login && !req.body.username) {
+      throw new Error('Username or email is required');
+    }
+    return true;
+  })
 ];
 
 const forgotPasswordValidation = [
