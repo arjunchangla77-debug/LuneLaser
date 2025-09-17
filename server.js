@@ -33,7 +33,7 @@ app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
 
-// CORS configuration
+// CORS configuration - Temporarily allow all Vercel domains
 const allowedOrigins = [
   'http://localhost:3000',
   'https://lunelaser.vercel.app',
@@ -49,7 +49,8 @@ app.use(cors({
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
     
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    // Allow all Vercel domains temporarily
+    if (origin && (origin.includes('vercel.app') || allowedOrigins.indexOf(origin) !== -1)) {
       console.log('CORS - Origin allowed:', origin);
       callback(null, true);
     } else {
