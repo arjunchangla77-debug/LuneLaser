@@ -66,8 +66,14 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Ensure all responses are JSON (prevent HTML error pages)
+// Debug middleware to log all requests
 app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.path} - Origin: ${req.get('Origin')} - Content-Type: ${req.get('Content-Type')}`);
+  next();
+});
+
+// Ensure all API responses are JSON (prevent HTML error pages)
+app.use('/api', (req, res, next) => {
   res.setHeader('Content-Type', 'application/json');
   next();
 });
@@ -86,6 +92,18 @@ app.get('/health', (req, res) => {
     message: 'EnamelPure Invoice API is running',
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || 'development'
+  });
+});
+
+// Test POST endpoint for debugging
+app.post('/api/test-post', (req, res) => {
+  console.log('Test POST received:', req.body);
+  res.json({
+    success: true,
+    message: 'POST request received successfully',
+    body: req.body,
+    headers: req.headers,
+    timestamp: new Date().toISOString()
   });
 });
 
