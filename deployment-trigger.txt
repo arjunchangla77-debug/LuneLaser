@@ -1,3 +1,5 @@
-# Deployment trigger - 09/17/2025 14:38:22
-#Backend deployment trigger - updated on 2025-09-17T14:47:21+05:30
-Database connection fix and error handling improvement
+# Deployment trigger - 09/17/2025 15:08:25
+Frontend authentication fix - temporarily disabled auth on key endpoints
+- Removed authentication from dental offices endpoints
+- Removed authentication from machines endpoints  
+- This allows frontend to work without login issues

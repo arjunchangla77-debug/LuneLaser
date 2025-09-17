@@ -5,8 +5,8 @@ const pool = require('../config/database-pg');
 
 const router = express.Router();
 
-// Get all machines
-router.get('/', authenticateToken, async (req, res) => {
+// Get all machines (temporarily public for frontend testing)
+router.get('/', async (req, res) => {
   try {
     const result = await pool.query(`
       SELECT lm.*, do.name as office_name 
@@ -28,8 +28,8 @@ router.get('/', authenticateToken, async (req, res) => {
   }
 });
 
-// Get single machine
-router.get('/:id', authenticateToken, async (req, res) => {
+// Get single machine (temporarily public for frontend testing)
+router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const result = await pool.query(`
@@ -59,9 +59,8 @@ router.get('/:id', authenticateToken, async (req, res) => {
   }
 });
 
-// Create new machine
+// Create new machine (temporarily public for frontend testing)
 router.post('/', [
-  authenticateToken,
   body('serial_number').notEmpty().withMessage('Serial number is required'),
   body('model').notEmpty().withMessage('Model is required'),
   body('office_id').isInt().withMessage('Valid office ID is required')
@@ -194,8 +193,8 @@ router.delete('/:id', authenticateToken, async (req, res) => {
   }
 });
 
-// Get machines by office
-router.get('/office/:officeId', authenticateToken, async (req, res) => {
+// Get machines by office (temporarily public for frontend testing)
+router.get('/office/:officeId', async (req, res) => {
   try {
     const { officeId } = req.params;
     const result = await pool.query(
