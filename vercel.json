@@ -1,19 +1,8 @@
 {
-  "buildCommand": "npm run build",
-  "env": {
-    "REACT_APP_API_URL": "https://enamel-backend.onrender.com",
-    "REACT_APP_API_BASE_URL": "https://enamel-backend.onrender.com"
-  },
-  "build": {
-    "env": {
-      "REACT_APP_API_URL": "https://enamel-backend.onrender.com",
-      "REACT_APP_API_BASE_URL": "https://enamel-backend.onrender.com"
-    }
-  },
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "https://enamel-backend.onrender.com/api/$1"
+      "source": "/api/:path*",
+      "destination": "https://enamel-backend.onrender.com/api/:path*"
     }
   ]
 }
